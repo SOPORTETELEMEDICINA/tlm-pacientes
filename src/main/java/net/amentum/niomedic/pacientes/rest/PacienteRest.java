@@ -225,6 +225,33 @@ public class PacienteRest extends BaseController {
       return pacienteService.getPacientePageCanalizados(datosBusqueda,active, page, size, orderColumn, orderType, idUser);
    }
 
+
+   @RequestMapping(value = "page/atendidos", method = RequestMethod.GET)
+   @ResponseStatus(HttpStatus.OK)
+   public Page<PacientePageView> getPacientePageAtendidos(@RequestParam(required = false, defaultValue = "") String datosBusqueda,
+                                                            @RequestParam(required = false) Boolean active,
+                                                            //  @RequestParam(required = false, defaultValue = "") String name,
+                                                            @RequestParam(required = false) Integer page,
+                                                            @RequestParam(required = false) Integer size,
+                                                            @RequestParam(required = false) String orderColumn,
+                                                            @RequestParam(required = false) String orderType,
+                                                            @RequestParam(required = false) Long idUser) throws PacienteException {
+
+      logger.info("===>>>getPacientePageAtendidos(): - datosBusqueda {} - active {} - page {} - size {} - orderColumn {} - orderType {} - idUser {}",
+              datosBusqueda, active, page, size, orderColumn, orderType, idUser); // GGR20200618 Agrego grupo seleccionado
+
+      if (page == null)
+         page = 0;
+      if (size == null)
+         size = 10;
+      if (orderType == null || orderType.isEmpty())
+         orderType = "asc";
+      if (orderColumn == null || orderColumn.isEmpty())
+         orderColumn = "nombre";
+
+      return pacienteService.getPacientePageAtendidos(datosBusqueda,active, page, size, orderColumn, orderType, idUser);
+   }
+
    @RequestMapping(value = "rollback/{idUserApp}", method = RequestMethod.DELETE)
    @ResponseStatus(HttpStatus.OK)
    public void deleteRollback(@PathVariable("idUserApp") Integer idUserApp) throws PacienteException {

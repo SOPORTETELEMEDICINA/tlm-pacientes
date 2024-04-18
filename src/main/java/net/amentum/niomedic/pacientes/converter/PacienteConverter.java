@@ -65,6 +65,8 @@ public class PacienteConverter {
       paciente.setEsTutor(pacienteView.getEsTutor());
       paciente.setIdDevice(pacienteView.getIdDevice());
       paciente.setClaveElector(pacienteView.getClaveElector());
+      paciente.setPacienteAtendido(pacienteView.getPacienteAtendido());
+
       // nuevos campos
       paciente.setPadecimientoCronico(pacienteView.getPadecimientoCronico());
       paciente.setAlergias(pacienteView.getAlergias());
@@ -310,6 +312,8 @@ public class PacienteConverter {
       pacienteView.setTransfusiones(paciente.getTransfusiones());
       pacienteView.setIdUnidadMedica(paciente.getIdUnidadMedica());
       pacienteView.setUserName(paciente.getUserName());
+      pacienteView.setPacienteAtendido(paciente.getPacienteAtendido());
+
 
       if (completeConversion) {
          if (paciente.getDatosContactoList() != null && !paciente.getDatosContactoList().isEmpty()) {
@@ -437,6 +441,7 @@ public class PacienteConverter {
       pacientePageView.setUserName(paciente.getUserName());
       pacientePageView.setIdPaciente(paciente.getIdPaciente());
       pacientePageView.setCurp(paciente.getCurp());
+      pacientePageView.setPacienteAtendido(paciente.getPacienteAtendido());
       logger.debug("converter paciente to View-Page: {}", pacientePageView);
       return pacientePageView;
    }

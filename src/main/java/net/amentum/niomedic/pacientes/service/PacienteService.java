@@ -28,6 +28,9 @@ public interface PacienteService {
     // GGR20200626 Obtener la segunda lista de pacientes canalizados
     Page<PacientePageView> getPacientePageCanalizados(String datosBusqueda, Boolean active, Integer page, Integer size, String orderColumn, String orderType, Long idUser) throws PacienteException;
 
+    Page<PacientePageView> getPacientePageAtendidos   (String datosBusqueda, Boolean active, Integer page, Integer size, String orderColumn, String orderType, Long selectGroup) throws PacienteException;
+
+
     void deleteRollback(Integer idUserApp) throws PacienteException;
 
     void updateIdDevice(Integer idUsuario, String idDevice) throws PacienteException;

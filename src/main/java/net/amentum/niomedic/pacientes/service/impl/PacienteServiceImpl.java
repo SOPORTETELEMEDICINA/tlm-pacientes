@@ -388,6 +388,12 @@ public class PacienteServiceImpl implements PacienteService {
          Paciente paciente = pacienteRepository.findOne(pacienteId);
          PacienteView view = pacienteConverter.toView(paciente, Boolean.TRUE);
          CatServicio servicio = serviciosRest.getServiciosByUsuario(view.getIdPaciente());
+
+         logger.error("===>>>Paciente paciente: {}", paciente);
+         logger.error("===>>>Paciente view: {}", view);
+         logger.error("===>>>Paciente servicios: {}", servicio);
+
+
          if(servicio != null)
             view.setCatServiciosList(servicio.getServicios());
          return view;
@@ -533,6 +539,80 @@ public class PacienteServiceImpl implements PacienteService {
          throw pacienteException;
       }
    }
+   @Override
+   public Page<PacientePageView> getPacientePageAtendidos(String datosBusqueda, Boolean active, Integer page, Integer size, String orderColumn, String orderType, Long idUser) throws PacienteException {
+         try {
+            logger.info("===>>>getPacientePageAtendidos(): - datosBusqueda {} - active {} - page {} - size: {} - orderColumn: {} - orderType: {} - idUser: {}",
+                    datosBusqueda, active, page, size, orderColumn, orderType, idUser);
+            List<PacientePageView> pacienteViewList = new ArrayList<>();
+            Page<Paciente> pacientePage = null;
+            Sort sort = new Sort(Sort.Direction.ASC, (String) colOrderNames.get("nombre"));
+
+            Boolean acts = false;
+
+            if (orderColumn != null && orderType != null) {
+               if (orderType.equalsIgnoreCase("asc")) {
+                  sort = new Sort(Sort.Direction.ASC, (String) colOrderNames.get(orderColumn));
+               } else {
+                  sort = new Sort(Sort.Direction.DESC, (String) colOrderNames.get(orderColumn));
+               }
+
+            }
+            PageRequest request = new PageRequest(page, size, sort);
+            final String patternSearch = "%" + datosBusqueda.toLowerCase() + "%";
+            Specifications<Paciente> spec = Specifications.where(
+                    (root, query, cb) -> {
+                       Predicate tc = null;
+
+                       tc =(tc != null ? cb.and(tc, cb.equal(root.get("pacienteAtendido"), acts)) : cb.equal(root.get("pacienteAtendido"), acts));
+                       if (datosBusqueda != null && !datosBusqueda.isEmpty()) {
+                          tc = (tc != null ? cb.and(tc, cb.like(cb.function("unaccent", String.class, cb.lower(root.get("datosBusqueda"))), sinAcentos(patternSearch))) : cb.like(cb.function("unaccent", String.class, cb.lower(root.get("datosBusqueda"))), sinAcentos(patternSearch)));
+                       }
+                       if (active != null) {
+                          tc = (tc != null ? cb.and(tc, cb.equal(root.get("activo"), active)) : cb.equal(root.get("activo"), active));
+                       }
+                       return tc;
+                    }
+            );
+            List<Long> losPacientesAtendidos = new ArrayList<>();
+            /*
+            try {
+               losPacientesCanalizados = apiServCaller.getListaCanalizados(idUser);
+               logger.info ("===>>>getPacientePageCanalizados(): Los usuarios canalizados para el idUser {} son: {}", idUser, losPacientesCanalizados);
+            } catch (Exception e) {
+               logger.info("===>>>Algo falló al pedir la lista de usuarios canalizados");
+            }
+            if (losPacientesCanalizados.isEmpty()) {
+               losPacientesCanalizados.add(new Long(0));
+            }
+
+           // if (spec == null) {
+           //    pacientePage = pacienteRepository.findAllByGroup(losPacientesCanalizados, patternSearch, request);
+            } else {
+               pacientePage = pacienteRepository.findAllByGroup(losPacientesCanalizados, patternSearch, request);
+            } */
+
+            pacientePage = pacienteRepository.findAll(spec, request);
+           // pacientePage = pacienteRepository.findAllByGroup(spec, patternSearch, request);
+            pacientePage.getContent().forEach(paciente -> {
+               pacienteViewList.add(pacienteConverter.toViewPage(paciente));
+            });
+            PageImpl<PacientePageView> pacienteViewPage = new PageImpl<PacientePageView>(pacienteViewList, request, pacientePage.getTotalElements());
+            return pacienteViewPage;
+         } catch (IllegalArgumentException iae) {
+            logger.error("===>>>Algun parametro no es correcto");
+            PacienteException pe = new PacienteException("Algun parametro no es correcto:", PacienteException.LAYER_SERVICE, PacienteException.ACTION_VALIDATE);
+            pe.addError("Puede que sea null, vacio o valor incorrecto");
+            throw pe;
+         } catch (Exception ex) {
+            PacienteException pacienteException = new PacienteException("Ocurrio un error al seleccionar lista Pacientes canalizados paginable", PacienteException.LAYER_SERVICE, PacienteException.ACTION_SELECT);
+            logger.error(ExceptionServiceCode.GROUP + "===>>>Error al tratar de seleccionar lista Pacientes canalizados paginable - CODE: {}", pacienteException.getExceptionCode(), ex);
+            throw pacienteException;
+         }
+      }
+
+
+
 
    private String sinAcentos(String cadena) {
       return Normalizer.normalize(cadena, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
@@ -749,6 +829,9 @@ public class PacienteServiceImpl implements PacienteService {
          throw pacienteException;
       }
    }
+
+
+
 
    @Transactional(readOnly = false, rollbackFor = {PacienteException.class})
    @Override

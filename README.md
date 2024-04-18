@@ -1,3 +1,7 @@
-# Microservicios para manejo de pacientes
+# nio-pacientes-server-configuration
 
-Contiene todo el CRUD necesario para el manejo de pacientes
+Archivos de configuración para servidores
+
+Se tienen distintas brach para cada servidor, si haces un cambio, no hagas request sobre main, para que no pierdas los archivos base
+
+Únicamente haz los cambios pertinentes y súbelos a la rama que corresponda a cada servidor

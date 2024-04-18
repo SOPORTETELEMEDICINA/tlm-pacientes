@@ -62,6 +62,9 @@ public class Paciente implements Serializable {
    private String idDevice;
    private String claveElector;
 
+   private Boolean pacienteAtendido;
+
+
    //relaciones entre tablas
    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "paciente")
    private Collection<DatosContacto> datosContactoList = new ArrayList<>();
@@ -113,6 +116,7 @@ public class Paciente implements Serializable {
               ", esTutor=" + esTutor +
               ", idDevice='" + idDevice + '\'' +
               ", claveElector='" + claveElector + '\'' +
+              ", pacienteAtendido=" + pacienteAtendido +
               '}';
    }
 }
