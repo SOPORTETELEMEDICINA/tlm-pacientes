@@ -10,4 +10,6 @@ public interface RelacionTutoresService {
     void createRelacionTutores(RelacionTutoresView tutoresView) throws TutoresException;
     List<RelacionTutoresView> findAll() throws TutoresException;
     RelacionTutoresView findByIdPaciente(String idPaciente) throws TutoresException;
+
+    RelacionTutoresView findByIdTutor(String idTutor) throws TutoresException;
 }

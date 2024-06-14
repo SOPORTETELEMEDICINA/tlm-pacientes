@@ -3,7 +3,9 @@ package net.amentum.niomedic.pacientes.rest;
 import java.util.List;
 import net.amentum.common.BaseController;
 import net.amentum.niomedic.pacientes.exception.PacienteException;
-import net.amentum.niomedic.pacientes.model.Paciente;
+import net.amentum.niomedic.pacientes.model.PacienteBeneficiarioDTO;
+import net.amentum.niomedic.pacientes.model.PacienteDTO;
+import net.amentum.niomedic.pacientes.model.RelacionTitular;
 import net.amentum.niomedic.pacientes.service.DatosAdicionalesService;
 import net.amentum.niomedic.pacientes.service.PacienteService;
 import net.amentum.niomedic.pacientes.views.PacientePageView;
@@ -13,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -278,4 +281,23 @@ public class PacienteRest extends BaseController {
       pacienteService.updateIdDevice(idUsuario, idDevice);
    }
 
+   @RequestMapping(value = "/getTitularByTelefono/{telefono}", method = RequestMethod.GET)
+   @ResponseStatus(HttpStatus.OK)
+   public ResponseEntity<PacienteDTO> getTitularPorTelefono(@PathVariable("telefono") String telefono) {
+      PacienteDTO pacienteDTO = pacienteService.getTitularPorTelefono(telefono);
+      if (pacienteDTO == null) {
+         return ResponseEntity.notFound().build();
+      }
+      return ResponseEntity.ok(pacienteDTO);
+   }
+
+   @RequestMapping(value = "/beneficiarios-titular/{idPacienteTitular}", method = RequestMethod.GET)
+   @ResponseStatus(HttpStatus.OK)
+   public ResponseEntity<List<PacienteBeneficiarioDTO>> getBeneficiariosTitular(@PathVariable("idPacienteTitular") String idPacienteTitular) throws Exception {
+      List<PacienteBeneficiarioDTO> pacientes = pacienteService.getBeneficiariosTitular(idPacienteTitular);
+      if (pacientes == null) {
+         return ResponseEntity.notFound().build();
+      }
+      return ResponseEntity.ok(pacientes);
+   }
 }

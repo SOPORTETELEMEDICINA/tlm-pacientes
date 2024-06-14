@@ -62,7 +62,7 @@ public class PacienteConverter {
       paciente.setFechaCreacion((!update) ? new Date() : paciente.getFechaCreacion());
       paciente.setIdUsuario(pacienteView.getIdUsuario());
       paciente.setActivo(pacienteView.getActivo());
-      paciente.setEsTutor(pacienteView.getEsTutor());
+      paciente.setEsTitular(pacienteView.getEsTitular());
       paciente.setIdDevice(pacienteView.getIdDevice());
       paciente.setClaveElector(pacienteView.getClaveElector());
       paciente.setPacienteAtendido(pacienteView.getPacienteAtendido());
@@ -299,7 +299,7 @@ public class PacienteConverter {
       pacienteView.setFechaCreacion(paciente.getFechaCreacion());
       pacienteView.setIdUsuario(paciente.getIdUsuario());
       pacienteView.setActivo(paciente.getActivo());
-      pacienteView.setEsTutor(paciente.getEsTutor());
+      pacienteView.setEsTitular(paciente.getEsTitular());
       pacienteView.setIdDevice(paciente.getIdDevice());
       pacienteView.setClaveElector(paciente.getClaveElector());
       // nuevos campos
@@ -444,5 +444,9 @@ public class PacienteConverter {
       pacientePageView.setPacienteAtendido(paciente.getPacienteAtendido());
       logger.debug("converter paciente to View-Page: {}", pacientePageView);
       return pacientePageView;
+   }
+   public PacienteDTO convertToDto(Paciente paciente) {
+      String nombreCompleto = String.format("%s %s %s", paciente.getNombre(), paciente.getApellidoPaterno(), paciente.getApellidoMaterno());
+      return new PacienteDTO(paciente.getIdPaciente(), nombreCompleto, paciente.getTelefonoCelular(), paciente.getEmail());
    }
 }

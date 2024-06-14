@@ -17,4 +17,5 @@ public interface RelacionTutoresRespository extends JpaRepository<RelacionTutore
 
     RelacionTutores findByIdPacTutor(String idPacTutor);
 
+    RelacionTutores findByIdTutor(String idTutor);
 }

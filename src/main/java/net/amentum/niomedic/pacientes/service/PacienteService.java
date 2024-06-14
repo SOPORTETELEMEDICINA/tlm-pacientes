@@ -2,6 +2,9 @@ package net.amentum.niomedic.pacientes.service;
 
 import java.util.List; // Sre19062020 nuevo
 import net.amentum.niomedic.pacientes.exception.PacienteException;
+import net.amentum.niomedic.pacientes.model.PacienteBeneficiarioDTO;
+import net.amentum.niomedic.pacientes.model.PacienteDTO;
+import net.amentum.niomedic.pacientes.model.RelacionTitular;
 import net.amentum.niomedic.pacientes.views.PacientePageView;
 import net.amentum.niomedic.pacientes.views.PacienteView;
 import org.springframework.data.domain.Page;
@@ -14,7 +17,6 @@ public interface PacienteService {
     PacienteView getDetailsPacienteById(String pacienteId) throws PacienteException;
 
     PacienteView getDetailsPacienteByUsuario(Integer idUsuario) throws PacienteException;
-
 
     PacienteView getDetailsPacienteByCurp(String curp) throws PacienteException;
 
@@ -34,4 +36,8 @@ public interface PacienteService {
     void deleteRollback(Integer idUserApp) throws PacienteException;
 
     void updateIdDevice(Integer idUsuario, String idDevice) throws PacienteException;
+
+    PacienteDTO getTitularPorTelefono(String telefono);
+
+    List<PacienteBeneficiarioDTO> getBeneficiariosTitular(String idPacienteTitular) throws Exception;
 }

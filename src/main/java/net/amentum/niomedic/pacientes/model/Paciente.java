@@ -58,7 +58,7 @@ public class Paciente implements Serializable {
    private Long numeroExpediente;
    //   campo compuesto de busqueda
    private String datosBusqueda;
-   private Boolean esTutor;
+   private Boolean esTitular;
    private String idDevice;
    private String claveElector;
 
@@ -113,7 +113,7 @@ public class Paciente implements Serializable {
               ", userName='" + userName + '\'' +
               ", numeroExpediente=" + numeroExpediente +
               ", datosBusqueda='" + datosBusqueda + '\'' +
-              ", esTutor=" + esTutor +
+              ", esTutor=" + esTitular +
               ", idDevice='" + idDevice + '\'' +
               ", claveElector='" + claveElector + '\'' +
               ", pacienteAtendido=" + pacienteAtendido +

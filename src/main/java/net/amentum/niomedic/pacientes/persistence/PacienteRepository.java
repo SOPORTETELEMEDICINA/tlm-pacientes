@@ -1,6 +1,7 @@
 package net.amentum.niomedic.pacientes.persistence;
 
 import net.amentum.niomedic.pacientes.model.Paciente;
+import net.amentum.niomedic.pacientes.model.RelacionTitular;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -37,4 +38,5 @@ public interface PacienteRepository extends JpaRepository<Paciente, String>, Jpa
    Page<Paciente> findAllByGroup(@Param("datosBusqueda") String datosBusqueda, Pageable pageable) throws Exception;
    // Fin GGR20200618
 
+   Paciente findByEsTitularTrueAndTelefonoCelular(String telefono);
 }

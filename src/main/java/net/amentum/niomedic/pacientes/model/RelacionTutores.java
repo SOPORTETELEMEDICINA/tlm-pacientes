@@ -17,11 +17,9 @@ public class RelacionTutores {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_relacion")
     private Integer idRelacion;
-    @Column(name = "id_tutor")
-    private Integer idTutor;
+    @Column(name = "idtutor")
+    private String idTutor;
     @Column(name = "id_pac_tutor")
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String idPacTutor;
     @Column(name = "parentesco")
     private String parentesco;

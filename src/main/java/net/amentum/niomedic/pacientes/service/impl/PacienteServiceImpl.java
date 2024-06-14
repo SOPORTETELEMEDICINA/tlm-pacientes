@@ -2,11 +2,7 @@ package net.amentum.niomedic.pacientes.service.impl;
 
 import net.amentum.common.GenericException;
 import net.amentum.niomedic.pacientes.configuration.ApiServCaller;
-import net.amentum.niomedic.pacientes.converter.DatosContactoConverter;
-import net.amentum.niomedic.pacientes.converter.DomicilioConverter;
-import net.amentum.niomedic.pacientes.converter.PacienteConverter;
-import net.amentum.niomedic.pacientes.converter.PersonasViviendaConverter;
-import net.amentum.niomedic.pacientes.converter.ServicioAdicionalesConverter;
+import net.amentum.niomedic.pacientes.converter.*;
 import net.amentum.niomedic.pacientes.exception.ExceptionServiceCode;
 import net.amentum.niomedic.pacientes.exception.PacienteException;
 import net.amentum.niomedic.pacientes.model.*;
@@ -53,12 +49,14 @@ public class PacienteServiceImpl implements PacienteService {
    private final Logger logger = LoggerFactory.getLogger(PacienteServiceImpl.class);
    private final Map<String, Object> colOrderNames = new HashMap<>();
    private PacienteRepository pacienteRepository;
+   private RelacionTitularRepository relacionTitularRepository;
    private DatosContactoRepository datosContactoRepository;
    private ServicioAdicionalesRepository servicioAdicionalesRepository;
    private PersonasViviendaRepository personasViviendaRepository;
    private DomicilioRepository domicilioRepository;
    private DatosAdicionalesRepository datosAdicionalesRepository;
    private PacienteConverter pacienteConverter;
+   private RelacionTitularConverter relacionTitularConverter;
    private ServicioAdicionalesConverter servicioAdicionalesConverter;
    private PersonasViviendaConverter personasViviendaConverter;
    private DatosContactoConverter datosContactoConverter;
@@ -98,6 +96,11 @@ public class PacienteServiceImpl implements PacienteService {
    }
 
    @Autowired
+   public void setRelacionTitularRepository(RelacionTitularRepository relacionTitularRepository) {
+      this.relacionTitularRepository = relacionTitularRepository;
+   }
+
+   @Autowired
    public void setDatosContactoRepository(DatosContactoRepository datosContactoRepository) {
       this.datosContactoRepository = datosContactoRepository;
    }
@@ -120,6 +123,11 @@ public class PacienteServiceImpl implements PacienteService {
    @Autowired
    public void setPacienteConverter(PacienteConverter pacienteConverter) {
       this.pacienteConverter = pacienteConverter;
+   }
+
+   @Autowired
+   public void setRelacionTitularConverter(RelacionTitularConverter relacionTitularConverter) {
+      this.relacionTitularConverter = relacionTitularConverter;
    }
 
    @Autowired
@@ -449,6 +457,7 @@ public class PacienteServiceImpl implements PacienteService {
          throw pe;
       }
    }
+
 
    @Override
    public PacienteView getDetailsPacienteByCurp(String curp) throws PacienteException {
@@ -882,6 +891,42 @@ public class PacienteServiceImpl implements PacienteService {
          logger.error("Error: {}", ex.getLocalizedMessage());
          PacienteException exception = new PacienteException("Ocurrió un error al hacer Update de idUserApp: " + idUsuario, PacienteException.LAYER_DAO, GenericException.ACTION_UPDATE);
          exception.addError(ex.getLocalizedMessage());
+         throw exception;
+      }
+   }
+   @Override
+   public PacienteDTO getTitularPorTelefono(String telefono) {
+      Paciente paciente = pacienteRepository.findByEsTitularTrueAndTelefonoCelular(telefono);
+      if (paciente == null) {
+         return null;
+      }
+      return pacienteConverter.convertToDto(paciente);
+   }
+
+   @Override
+   public List<PacienteBeneficiarioDTO> getBeneficiariosTitular(String idPacienteTitular) throws Exception {
+      try {
+         List<PacienteBeneficiarioDTO> pacientesDTO = new ArrayList<>();
+         List<RelacionTitular> pacientes = relacionTitularRepository.findAllByIdPacienteTitular(idPacienteTitular);
+
+         if (pacientes == null) {
+            return null;
+         }
+
+         for (int i = 0; i < pacientes.size(); i++) {
+            PacienteBeneficiarioDTO pacienteDTO = relacionTitularConverter.convertToPacienteBeneficiarioDTO(pacientes.get(i));
+
+            pacientesDTO.add(pacienteDTO);
+         }
+
+         return pacientesDTO;
+      }
+      catch(Exception ex) {
+         logger.error("Error: {}", ex.getLocalizedMessage());
+
+         PacienteException exception = new PacienteException("Ocurrió un error al consultar los beneficiarios del paciente", PacienteException.LAYER_DAO, GenericException.ACTION_UPDATE);
+         exception.addError(ex.getLocalizedMessage());
+
          throw exception;
       }
    }

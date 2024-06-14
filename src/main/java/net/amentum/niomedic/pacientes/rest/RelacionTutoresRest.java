@@ -33,7 +33,8 @@ public class RelacionTutoresRest extends BaseController  {
     public void createRelacionTutores(@RequestBody @Valid RelacionTutoresView tutoresView) throws TutoresException {
         try {
             logger.info("====>Guardar relacion tutor - {}", tutoresView);
-            if(tutoresView.getIdTutor() == null || tutoresView.getIdTutor() <= 0) {
+            //if(tutoresView.getIdTutor() == null || tutoresView.getIdTutor() <= 0) {
+            if(tutoresView.getIdTutor() == null ) {
                 logger.error("Campo id tutor vacío");
                 throw new TutoresException("Campo id tutor vacío", PacienteException.LAYER_REST, PacienteException.ACTION_INSERT);
             }
@@ -62,14 +63,32 @@ public class RelacionTutoresRest extends BaseController  {
     public RelacionTutoresView getRelacionTutor(@RequestParam() String idPaciente) throws TutoresException {
         try {
             logger.info("getRelacionTutor() - idPaciente - {}", idPaciente);
+
             if(idPaciente == null || idPaciente.isEmpty()) {
                 logger.error("idPaciente vacio/null");
                 throw new TutoresException("id para buscar vacio", PacienteException.LAYER_REST, PacienteException.ACTION_SELECT);
             }
+
             return service.findByIdPaciente(idPaciente);
         } catch(Exception ex) {
             logger.error(ex.getMessage());
             throw new TutoresException("Error al buscar una relacion de tutor - " + ex.getMessage(), PacienteException.LAYER_REST, PacienteException.ACTION_SELECT);
+        }
+    }
+
+    @RequestMapping(value = "find-by-tutor/{idTutor}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public RelacionTutoresView getRelacionTutorByTutor(@PathVariable("idTutor") String idTutor) throws TutoresException {
+        try {
+            logger.info("getRelacionTutor() - idPaciente - {}", idTutor);
+            if(idTutor == null || idTutor.isEmpty()) {
+                logger.error("idTutor vacio/null");
+                throw new TutoresException("id para buscar vacio", PacienteException.LAYER_REST, PacienteException.ACTION_SELECT);
+            }
+            return service.findByIdTutor(idTutor);
+        } catch(Exception ex) {
+            logger.error(ex.getMessage());
+            throw new TutoresException("Error al buscar una relacion de tutor by tutor - " + ex.getMessage(), PacienteException.LAYER_REST, PacienteException.ACTION_SELECT);
         }
     }
 

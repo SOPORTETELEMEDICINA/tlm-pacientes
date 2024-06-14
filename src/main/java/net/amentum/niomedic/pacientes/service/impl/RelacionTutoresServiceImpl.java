@@ -104,4 +104,21 @@ public class RelacionTutoresServiceImpl implements RelacionTutoresService {
         }
         return view;
     }
+
+    @Override
+    public RelacionTutoresView findByIdTutor(String idTutor) throws TutoresException {
+        RelacionTutoresView view = null;
+        try {
+            RelacionTutores entity = repository.findByIdTutor(idTutor);
+            Paciente paciente = pacienteRepository.getOne(entity.getIdPacTutor());
+            view = converter.toView(entity);
+            view.setEmail(paciente.getEmail());
+            view.setNombreTutor(String.format("%s %s %s", paciente.getNombre(), paciente.getApellidoMaterno(), paciente.getApellidoPaterno()));
+            view.setTelefono(paciente.getTelefonoCelular());
+        } catch (Exception ex) {
+            logger.error("Error al obtener relación con tutor - {}", ex.getMessage());
+            throw new TutoresException(ex.getMessage(), PacienteException.LAYER_SERVICE, PacienteException.ACTION_SELECT);
+        }
+        return view;
+    }
 }
