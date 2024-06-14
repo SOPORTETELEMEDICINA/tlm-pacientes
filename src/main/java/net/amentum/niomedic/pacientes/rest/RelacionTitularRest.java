@@ -53,7 +53,7 @@ public class RelacionTitularRest extends BaseController {
         }
     }
 
-    @RequestMapping(value = "/beneficiarios/{idPacienteTitular}", method = RequestMethod.GET)
+    @RequestMapping(value = "beneficiarios/{idPacienteTitular}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<PacienteBeneficiarioDTO>> getBeneficiariosTitular(@PathVariable("idPacienteTitular") String idPacienteTitular) throws Exception {
         List<PacienteBeneficiarioDTO> pacientes = service.getBeneficiariosTitular(idPacienteTitular);
