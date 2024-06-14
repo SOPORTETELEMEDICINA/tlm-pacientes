@@ -290,14 +290,4 @@ public class PacienteRest extends BaseController {
       }
       return ResponseEntity.ok(pacienteDTO);
    }
-
-   @RequestMapping(value = "/beneficiarios-titular/{idPacienteTitular}", method = RequestMethod.GET)
-   @ResponseStatus(HttpStatus.OK)
-   public ResponseEntity<List<PacienteBeneficiarioDTO>> getBeneficiariosTitular(@PathVariable("idPacienteTitular") String idPacienteTitular) throws Exception {
-      List<PacienteBeneficiarioDTO> pacientes = pacienteService.getBeneficiariosTitular(idPacienteTitular);
-      if (pacientes == null) {
-         return ResponseEntity.notFound().build();
-      }
-      return ResponseEntity.ok(pacientes);
-   }
 }

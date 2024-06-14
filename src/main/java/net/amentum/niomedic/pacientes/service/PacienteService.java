@@ -38,6 +38,4 @@ public interface PacienteService {
     void updateIdDevice(Integer idUsuario, String idDevice) throws PacienteException;
 
     PacienteDTO getTitularPorTelefono(String telefono);
-
-    List<PacienteBeneficiarioDTO> getBeneficiariosTitular(String idPacienteTitular) throws Exception;
 }

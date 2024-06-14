@@ -902,34 +902,6 @@ public class PacienteServiceImpl implements PacienteService {
       }
       return pacienteConverter.convertToDto(paciente);
    }
-
-   @Override
-   public List<PacienteBeneficiarioDTO> getBeneficiariosTitular(String idPacienteTitular) throws Exception {
-      try {
-         List<PacienteBeneficiarioDTO> pacientesDTO = new ArrayList<>();
-         List<RelacionTitular> pacientes = relacionTitularRepository.findAllByIdPacienteTitular(idPacienteTitular);
-
-         if (pacientes == null) {
-            return null;
-         }
-
-         for (int i = 0; i < pacientes.size(); i++) {
-            PacienteBeneficiarioDTO pacienteDTO = relacionTitularConverter.convertToPacienteBeneficiarioDTO(pacientes.get(i));
-
-            pacientesDTO.add(pacienteDTO);
-         }
-
-         return pacientesDTO;
-      }
-      catch(Exception ex) {
-         logger.error("Error: {}", ex.getLocalizedMessage());
-
-         PacienteException exception = new PacienteException("Ocurrió un error al consultar los beneficiarios del paciente", PacienteException.LAYER_DAO, GenericException.ACTION_UPDATE);
-         exception.addError(ex.getLocalizedMessage());
-
-         throw exception;
-      }
-   }
 }
 
 
