@@ -445,8 +445,8 @@ public class PacienteConverter {
       logger.debug("converter paciente to View-Page: {}", pacientePageView);
       return pacientePageView;
    }
-   public PacienteDTO convertToDto(Paciente paciente) {
+   public PacienteTitularView toPacienteTitularView(Paciente paciente) {
       String nombreCompleto = String.format("%s %s %s", paciente.getNombre(), paciente.getApellidoPaterno(), paciente.getApellidoMaterno());
-      return new PacienteDTO(paciente.getIdPaciente(), nombreCompleto, paciente.getTelefonoCelular(), paciente.getEmail());
+      return new PacienteTitularView(paciente.getIdPaciente(), nombreCompleto, paciente.getTelefonoCelular(), paciente.getEmail());
    }
 }

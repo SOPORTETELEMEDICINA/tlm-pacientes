@@ -6,6 +6,7 @@ import net.amentum.niomedic.pacientes.model.PacienteBeneficiarioDTO;
 import net.amentum.niomedic.pacientes.model.PacienteDTO;
 import net.amentum.niomedic.pacientes.model.RelacionTitular;
 import net.amentum.niomedic.pacientes.views.PacientePageView;
+import net.amentum.niomedic.pacientes.views.PacienteTitularView;
 import net.amentum.niomedic.pacientes.views.PacienteView;
 import org.springframework.data.domain.Page;
 
@@ -37,5 +38,5 @@ public interface PacienteService {
 
     void updateIdDevice(Integer idUsuario, String idDevice) throws PacienteException;
 
-    PacienteDTO getTitularPorTelefono(String telefono);
+    PacienteTitularView getTitularPorTelefono(String telefono);
 }

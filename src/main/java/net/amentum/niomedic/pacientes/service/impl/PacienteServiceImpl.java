@@ -895,13 +895,16 @@ public class PacienteServiceImpl implements PacienteService {
       }
    }
    @Override
-   public PacienteDTO getTitularPorTelefono(String telefono) {
+   public PacienteTitularView getTitularPorTelefono(String telefono) {
       Paciente paciente = pacienteRepository.findByEsTitularTrueAndTelefonoCelular(telefono);
+
       if (paciente == null) {
          return null;
       }
-      return pacienteConverter.convertToDto(paciente);
+
+      return pacienteConverter.toPacienteTitularView(paciente);
    }
+
 }
 
 

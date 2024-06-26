@@ -9,6 +9,7 @@ import net.amentum.niomedic.pacientes.model.RelacionTitular;
 import net.amentum.niomedic.pacientes.service.DatosAdicionalesService;
 import net.amentum.niomedic.pacientes.service.PacienteService;
 import net.amentum.niomedic.pacientes.views.PacientePageView;
+import net.amentum.niomedic.pacientes.views.PacienteTitularView;
 import net.amentum.niomedic.pacientes.views.PacienteView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -281,13 +282,15 @@ public class PacienteRest extends BaseController {
       pacienteService.updateIdDevice(idUsuario, idDevice);
    }
 
-   @RequestMapping(value = "/getTitularByTelefono/{telefono}", method = RequestMethod.GET)
+   @RequestMapping(value = "/titular-por-telefono/{telefono}", method = RequestMethod.GET)
    @ResponseStatus(HttpStatus.OK)
-   public ResponseEntity<PacienteDTO> getTitularPorTelefono(@PathVariable("telefono") String telefono) {
-      PacienteDTO pacienteDTO = pacienteService.getTitularPorTelefono(telefono);
+   public ResponseEntity<PacienteTitularView> getTitularPorTelefono(@PathVariable("telefono") String telefono) {
+      PacienteTitularView pacienteDTO = pacienteService.getTitularPorTelefono(telefono);
+
       if (pacienteDTO == null) {
          return ResponseEntity.notFound().build();
       }
       return ResponseEntity.ok(pacienteDTO);
    }
+
 }
