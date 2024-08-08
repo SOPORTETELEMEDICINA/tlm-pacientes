@@ -69,7 +69,7 @@ public class OneSignalApi {
             PacienteView pacienteView;
             try {
                 pacienteView = pacienteService.getDetailsPacienteById((String) element.get("idPaciente"));
-                if(pacienteView.getIdDevice().isEmpty() || pacienteView.getIdDevice() == null || pacienteView.getIdDevice().equalsIgnoreCase("")) {
+                if(pacienteView.getIdDevice() == "" || pacienteView.getIdDevice() == null || pacienteView.getIdDevice().equalsIgnoreCase("")) {
                     callback.onError("Id device vacío", element);
                     return;
                 }
