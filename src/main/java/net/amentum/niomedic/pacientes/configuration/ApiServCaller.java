@@ -299,4 +299,36 @@ public class ApiServCaller {
         }
     }
 
+    public String getGroupName(Integer idGroup) throws Exception {
+        try {
+            URL url = new URL(urlProperti + "groups/" + idGroup);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            if(!tokenActivo()) {
+                Map<String, Object> infoTocken = obtenerToken();
+                token = "bearer " + infoTocken.get("access_token");
+            }
+            conn.setRequestProperty("Authorization", token);
+            try(
+                    BufferedReader br = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8))) {
+                StringBuilder response = new StringBuilder();
+                String responseLine;
+                while ((responseLine = br.readLine()) != null)
+                    response.append(responseLine.trim());
+                conn.disconnect();
+
+                JSONObject jsonObject = new JSONObject(response.toString());
+
+                return jsonObject.getString("groupName");
+            }
+        } catch (PacienteException ce) {
+            throw ce;
+        } catch (Exception e) {
+            log.error("Ocurrio un error inesperado al obtener los detalles del usuario- error: {}", e.getCause().toString());
+            throw e;
+        }
+
+    }
+
 }
