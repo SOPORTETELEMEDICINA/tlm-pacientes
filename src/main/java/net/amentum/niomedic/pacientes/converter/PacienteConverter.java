@@ -62,7 +62,7 @@ public class PacienteConverter {
       paciente.setFechaCreacion((!update) ? new Date() : paciente.getFechaCreacion());
       paciente.setIdUsuario(pacienteView.getIdUsuario());
       paciente.setActivo(pacienteView.getActivo());
-      paciente.setEsTitular(pacienteView.getEsTitular());
+      paciente.setEs_titular(pacienteView.getEs_titular());
       paciente.setIdDevice(pacienteView.getIdDevice());
       paciente.setClaveElector(pacienteView.getClaveElector());
       paciente.setPacienteAtendido(pacienteView.getPacienteAtendido());
@@ -299,7 +299,7 @@ public class PacienteConverter {
       pacienteView.setFechaCreacion(paciente.getFechaCreacion());
       pacienteView.setIdUsuario(paciente.getIdUsuario());
       pacienteView.setActivo(paciente.getActivo());
-      pacienteView.setEsTitular(paciente.getEsTitular());
+      pacienteView.setEs_titular(paciente.getEs_titular());
       pacienteView.setIdDevice(paciente.getIdDevice());
       pacienteView.setClaveElector(paciente.getClaveElector());
       // nuevos campos

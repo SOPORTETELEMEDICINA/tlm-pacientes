@@ -16,6 +16,7 @@ public class RelacionTitularConverter {
       entity.setParentesco(view.getParentesco());
       return entity;
    }
+
    public PacienteBeneficiarioDTO convertToPacienteBeneficiarioDTO(RelacionTitular pacienteBeneficiario, Paciente paciente) {
       String nombreCompleto = String.format("%s %s %s", paciente.getNombre(), paciente.getApellidoPaterno(),  paciente.getApellidoMaterno());
       return new PacienteBeneficiarioDTO(paciente.getIdPaciente(), nombreCompleto,  paciente.getTelefonoCelular(),  paciente.getEmail(), pacienteBeneficiario.getParentesco());

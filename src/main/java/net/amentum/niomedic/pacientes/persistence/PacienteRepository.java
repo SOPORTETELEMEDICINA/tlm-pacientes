@@ -37,6 +37,6 @@ public interface PacienteRepository extends JpaRepository<Paciente, String>, Jpa
    @Query(value = "SELECT p FROM Paciente p WHERE lower(datosBusqueda) like :datosBusqueda")
    Page<Paciente> findAllByGroup(@Param("datosBusqueda") String datosBusqueda, Pageable pageable) throws Exception;
    // Fin GGR20200618
-
+   @Query("SELECT p FROM Paciente p WHERE p.es_titular = true AND p.telefonoCelular = ?1")
    Paciente findByEsTitularTrueAndTelefonoCelular(String telefono);
 }
