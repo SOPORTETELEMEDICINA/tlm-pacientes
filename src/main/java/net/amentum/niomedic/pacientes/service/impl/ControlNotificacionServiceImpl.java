@@ -159,10 +159,10 @@ public class ControlNotificacionServiceImpl implements ControlNotificacionServic
         }
     }
 
-    @Scheduled(cron = "0 0/5 * * * *")
+//    @Scheduled(cron = "0 0/5 * * * *")
 //    @Scheduled(cron = "0 10 0 * * *")
     /*@Scheduled(cron = "0/30 * * * * *")*/
-    /*@Scheduled(cron = "0 55 12 * * *")*/
+    @Scheduled(cron = "0 55 12 * * *")
     @Transactional()
     public void syncNotifications() {
         try {
