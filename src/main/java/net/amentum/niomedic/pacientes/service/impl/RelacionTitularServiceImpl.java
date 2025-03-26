@@ -49,6 +49,13 @@ public class RelacionTitularServiceImpl implements RelacionTitularService {
     @Override
     public void createRelacionTitular(RelacionTitularView relacionTitularView) throws TutoresException {
         try {
+            if (repository.existsByIdPacienteTitularAndIdPacienteBeneficiario(
+                    relacionTitularView.getIdPacienteTitular(),
+                    relacionTitularView.getIdPacienteBeneficiario())) {
+                throw new TutoresException("La relación entre el titular y el beneficiario ya existe",
+                        PacienteException.LAYER_SERVICE,
+                        PacienteException.ACTION_INSERT);
+            }
             logger.info("Agregando nueva relacion titular - {}", relacionTitularView);
 
             repository.save(converter.toEntity(relacionTitularView));

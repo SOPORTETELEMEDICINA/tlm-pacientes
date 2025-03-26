@@ -12,4 +12,6 @@ import java.util.List;
 @Repository
 public interface RelacionTitularRepository extends JpaRepository<RelacionTitular, String>, JpaSpecificationExecutor {
     List<RelacionTitular> findAllByIdPacienteTitular(String idPacienteTitular) throws Exception;
+
+    boolean existsByIdPacienteTitularAndIdPacienteBeneficiario(String idPacienteTitular, String idPacienteBeneficiario);
 }
