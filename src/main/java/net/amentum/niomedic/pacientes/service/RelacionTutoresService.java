@@ -11,5 +11,6 @@ public interface RelacionTutoresService {
     List<RelacionTutoresView> findAll() throws TutoresException;
     RelacionTutoresView findByIdPaciente(String idPaciente) throws TutoresException;
 
-    RelacionTutoresView findByIdTutor(String idTutor) throws TutoresException;
+    RelacionTutoresView findByIdTutor(Integer idTutor) throws TutoresException;
+
 }

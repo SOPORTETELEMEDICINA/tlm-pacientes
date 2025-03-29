@@ -10,14 +10,15 @@ public class TutoresConverter {
     public Tutores toEntity(TutoresView view) {
         Tutores entity = new Tutores();
         entity.setIdPaciente(view.getIdPaciente());
-        entity.setIdTutor(view.getIdTutor());
+        entity.setIdTutor(view.getIdTutor()); // Integer ahora
         return entity;
     }
 
     public TutoresView toView(Tutores entity) {
         TutoresView view = new TutoresView();
-        view.setIdTutor(entity.getIdTutor());
+        view.setIdTutor(entity.getIdTutor()); // Integer ahora
         view.setIdPaciente(entity.getIdPaciente());
         return view;
     }
+
 }

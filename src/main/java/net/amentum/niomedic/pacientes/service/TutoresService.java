@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TutoresService {
 
-    void createTutores(TutoresView tutoresView) throws TutoresException;
+    TutoresView createTutores(TutoresView tutoresView) throws TutoresException;
     List<TutoresView> findAll() throws TutoresException;
 
 }

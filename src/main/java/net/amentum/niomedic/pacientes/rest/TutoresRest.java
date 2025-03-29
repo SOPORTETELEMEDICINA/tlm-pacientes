@@ -29,12 +29,13 @@ public class TutoresRest extends BaseController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public void createTutores(@RequestBody @Valid TutoresView tutoresView) throws TutoresException {
+    public TutoresView createTutores(@RequestBody @Valid TutoresView tutoresView) throws TutoresException {
         try {
-            logger.info("====>Guardar nuevo tutor - {}", tutoresView);
+            logger.info("====> Guardar nuevo tutor - {}", tutoresView);
             if(tutoresView.getIdPaciente() != null && tutoresView.getIdPaciente().isEmpty())
                 throw new TutoresException("Campo de paciente vacío", PacienteException.LAYER_REST, PacienteException.ACTION_INSERT);
-            service.createTutores(tutoresView);
+
+            return service.createTutores(tutoresView); // retorna el TutoresView creado con idTutor
         } catch (Exception ex) {
             throw new TutoresException("Error al insertar - " + ex.getMessage(), PacienteException.LAYER_REST, PacienteException.ACTION_INSERT);
         }

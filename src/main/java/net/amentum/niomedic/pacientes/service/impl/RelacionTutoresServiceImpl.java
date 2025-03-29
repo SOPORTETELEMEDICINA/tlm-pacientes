@@ -106,9 +106,10 @@ public class RelacionTutoresServiceImpl implements RelacionTutoresService {
     }
 
     @Override
-    public RelacionTutoresView findByIdTutor(String idTutor) throws TutoresException {
+    public RelacionTutoresView findByIdTutor(Integer idTutor) throws TutoresException {
         RelacionTutoresView view = null;
         try {
+            // Ahora sí coinciden los tipos con la interfaz y el repositorio
             RelacionTutores entity = repository.findByIdTutor(idTutor);
             Paciente paciente = pacienteRepository.getOne(entity.getIdPacTutor());
             view = converter.toView(entity);
@@ -121,4 +122,5 @@ public class RelacionTutoresServiceImpl implements RelacionTutoresService {
         }
         return view;
     }
+
 }

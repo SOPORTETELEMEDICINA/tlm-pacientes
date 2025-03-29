@@ -15,7 +15,7 @@ public class Tutores {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_tutor")
-    private String idTutor;
+    private Integer idTutor;
     @Column(name = "id_paciente")
     private String idPaciente;
 }

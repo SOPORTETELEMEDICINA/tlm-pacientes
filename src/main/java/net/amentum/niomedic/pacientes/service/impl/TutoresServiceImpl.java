@@ -45,11 +45,17 @@ public class TutoresServiceImpl implements TutoresService {
 
     @Transactional(rollbackFor = {TutoresException.class})
     @Override
-    public void createTutores(TutoresView tutoresView) throws TutoresException {
+    public TutoresView createTutores(TutoresView tutoresView) throws TutoresException {
         try {
             if(repository.existTutor(tutoresView.getIdPaciente()))
                 throw new TutoresException("Tutor repetido", PacienteException.LAYER_REST, PacienteException.ACTION_INSERT);
-            repository.save(converter.toEntity(tutoresView));
+
+            // guardas la entidad y obtienes el id generado
+            Tutores nuevoTutor = repository.save(converter.toEntity(tutoresView));
+
+            // retornas el view generado con idTutor
+            return converter.toView(nuevoTutor);
+
         } catch (Exception ex) {
             logger.error("Error al insertar el tutor - {}", ex.getMessage());
             throw new TutoresException("Error al insertar nuevo tutor - " + ex.getMessage(), PacienteException.LAYER_REST, PacienteException.ACTION_INSERT);
