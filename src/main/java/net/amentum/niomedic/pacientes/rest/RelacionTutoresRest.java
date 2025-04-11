@@ -78,7 +78,7 @@ public class RelacionTutoresRest extends BaseController  {
 
     @RequestMapping(value = "find-by-tutor/{idTutor}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public RelacionTutoresView getRelacionTutorByTutor(@PathVariable("idTutor") Integer idTutor) throws TutoresException {
+    public RelacionTutoresView getRelacionTutorByTutor(@PathVariable("idTutor") String idTutor) throws TutoresException {
         try {
             logger.info("getRelacionTutor() - idPaciente - {}", idTutor);
             if(idTutor == null) {

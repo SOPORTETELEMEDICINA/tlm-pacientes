@@ -72,8 +72,7 @@ public class RelacionTutoresServiceImpl implements RelacionTutoresService {
         try {
             List<RelacionTutores> entityList = repository.findAll();
             for(RelacionTutores entity : entityList) {
-                Tutores tutores = tutoresRepository.findByIdTutor(entity.getIdTutor());
-                Paciente paciente = pacienteRepository.getOne(tutores.getIdPaciente());
+                Paciente paciente = pacienteRepository.getOne(entity.getIdTutor());
                 RelacionTutoresView view = converter.toView(entity);
                 view.setEmail(paciente.getEmail());
                 view.setNombreTutor(String.format("%s %s %s", paciente.getNombre(), paciente.getApellidoMaterno(), paciente.getApellidoPaterno()));
@@ -92,8 +91,7 @@ public class RelacionTutoresServiceImpl implements RelacionTutoresService {
         RelacionTutoresView view = null;
         try {
             RelacionTutores entity = repository.findByIdPacTutor(idPaciente);
-            Tutores tutores = tutoresRepository.findByIdTutor(entity.getIdTutor());
-            Paciente paciente = pacienteRepository.getOne(tutores.getIdPaciente());
+            Paciente paciente = pacienteRepository.getOne(entity.getIdTutor());
             view = converter.toView(entity);
             view.setEmail(paciente.getEmail());
             view.setNombreTutor(String.format("%s %s %s", paciente.getNombre(), paciente.getApellidoMaterno(), paciente.getApellidoPaterno()));
@@ -106,7 +104,7 @@ public class RelacionTutoresServiceImpl implements RelacionTutoresService {
     }
 
     @Override
-    public RelacionTutoresView findByIdTutor(Integer idTutor) throws TutoresException {
+    public RelacionTutoresView findByIdTutor(String idTutor) throws TutoresException {
         RelacionTutoresView view = null;
         try {
             // Ahora sí coinciden los tipos con la interfaz y el repositorio

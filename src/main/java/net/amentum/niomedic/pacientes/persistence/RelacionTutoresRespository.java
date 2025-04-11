@@ -10,12 +10,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RelacionTutoresRespository extends JpaRepository<RelacionTutores, Integer>, JpaSpecificationExecutor {
+public interface RelacionTutoresRespository extends JpaRepository<RelacionTutores, String>, JpaSpecificationExecutor {
 
     @Query(value = "select case when count(rt)>0 then true else false end from relacion_tutores rt where rt.id_pac_tutor = :idPaciente", nativeQuery = true)
     boolean existTutor(@Param("idPaciente") String idPaciente);
 
     RelacionTutores findByIdPacTutor(String idPacTutor);
 
-    RelacionTutores findByIdTutor(Integer idTutor);
+    RelacionTutores findByIdTutor(String idTutor);
 }

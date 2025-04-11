@@ -18,7 +18,7 @@ public class RelacionTutores {
     @Column(name = "id_relacion")
     private Integer idRelacion;
     @Column(name = "idtutor")
-    private Integer idTutor;  // Cambia a Integer
+    private String idTutor;  // Cambia a Integer
     @Column(name = "id_pac_tutor")
     private String idPacTutor;
     @Column(name = "parentesco")
