@@ -8,6 +8,7 @@ import net.amentum.niomedic.pacientes.model.PacienteDTO;
 import net.amentum.niomedic.pacientes.model.RelacionTitular;
 import net.amentum.niomedic.pacientes.service.DatosAdicionalesService;
 import net.amentum.niomedic.pacientes.service.PacienteService;
+import net.amentum.niomedic.pacientes.views.PacienteDeviceMinView;
 import net.amentum.niomedic.pacientes.views.PacientePageView;
 import net.amentum.niomedic.pacientes.views.PacienteTitularView;
 import net.amentum.niomedic.pacientes.views.PacienteView;
@@ -296,23 +297,14 @@ public class PacienteRest extends BaseController {
     // GET /pacientes/page/by-group-with-device?selectGroup=123&page=0&size=20&orderColumn=nombre&orderType=asc
     @RequestMapping(value = "page/by-group-with-device", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Page<PacientePageView> getPacientePageByGroupWithDevice(
+    public List<PacienteDeviceMinView> getPacientesByGroupWithDevice(
             @RequestParam Long selectGroup,
-            @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer size,
             @RequestParam(required = false) String orderColumn,
             @RequestParam(required = false) String orderType) throws PacienteException {
 
-        logger.info("===>>>getPacientePageByGroupWithDevice(): selectGroup={} page={} size={} orderColumn={} orderType={}",
-                selectGroup, page, size, orderColumn, orderType);
+        logger.info("===>>>getPacientesByGroupWithDevice(): selectGroup={} orderColumn={} orderType={}",
+                selectGroup, orderColumn, orderType);
 
-        if (page == null) page = 0;
-        if (size == null) size = 10;
-        if (orderType == null || orderType.isEmpty()) orderType = "asc";
-        if (orderColumn == null || orderColumn.isEmpty()) orderColumn = "nombre";
-
-        return pacienteService.getPacientePageByGroupWithDevice(selectGroup, page, size, orderColumn, orderType);
+        return pacienteService.getPacientesByGroupWithDevice(selectGroup, orderColumn, orderType);
     }
-
-
 }

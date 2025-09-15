@@ -41,14 +41,15 @@ public interface PacienteRepository extends JpaRepository<Paciente, String>, Jpa
    Paciente findByEsTitularTrueAndTelefonoCelular(String telefono);
 
     // Solo ACTIVOS, pertenecen al grupo, y con idDevice REAL (no null, no vacío, no "null")
+    // Lista completa: ACTIVOS, pertenecen al grupo (por idUsuario) y con idDevice real (no null, no vacío, no 'null')
     @Query("SELECT p FROM Paciente p " +
             "WHERE p.activo = TRUE " +
             "AND p.idUsuario IN (:usuarios) " +
             "AND p.idDevice IS NOT NULL " +
             "AND LENGTH(TRIM(p.idDevice)) > 0 " +
             "AND LOWER(TRIM(p.idDevice)) <> 'null'")
-    Page<Paciente> findByUsuariosWithDeviceActivos(@Param("usuarios") List<Long> usuarios,
-                                                   Pageable pageable);
+    List<Paciente> findAllByUsuariosWithDeviceActivos(@Param("usuarios") List<Long> usuarios);
+
 
 
 }

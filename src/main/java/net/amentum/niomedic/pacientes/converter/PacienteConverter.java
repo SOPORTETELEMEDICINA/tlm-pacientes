@@ -450,4 +450,25 @@ public class PacienteConverter {
       String nombreCompleto = String.format("%s %s %s", paciente.getNombre(), paciente.getApellidoPaterno(), paciente.getApellidoMaterno());
       return new PacienteTitularView(paciente.getIdPaciente(), nombreCompleto, paciente.getTelefonoCelular(), paciente.getEmail());
    }
+
+    public PacienteDeviceMinView toDeviceMinView(Paciente paciente) {
+        if (paciente == null) return null;
+
+        // Construir nombre completo de forma robusta
+        StringBuilder sb = new StringBuilder();
+        if (paciente.getNombre() != null) sb.append(paciente.getNombre().trim());
+        if (paciente.getApellidoPaterno() != null && !paciente.getApellidoPaterno().trim().isEmpty())
+            sb.append(" ").append(paciente.getApellidoPaterno().trim());
+        if (paciente.getApellidoMaterno() != null && !paciente.getApellidoMaterno().trim().isEmpty())
+            sb.append(" ").append(paciente.getApellidoMaterno().trim());
+
+        String nombreCompleto = sb.toString().trim();
+
+        return new PacienteDeviceMinView(
+                nombreCompleto,
+                paciente.getIdPaciente(),
+                paciente.getIdDevice()
+        );
+    }
+
 }

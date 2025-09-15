@@ -5,6 +5,7 @@ import net.amentum.niomedic.pacientes.exception.PacienteException;
 import net.amentum.niomedic.pacientes.model.PacienteBeneficiarioDTO;
 import net.amentum.niomedic.pacientes.model.PacienteDTO;
 import net.amentum.niomedic.pacientes.model.RelacionTitular;
+import net.amentum.niomedic.pacientes.views.PacienteDeviceMinView;
 import net.amentum.niomedic.pacientes.views.PacientePageView;
 import net.amentum.niomedic.pacientes.views.PacienteTitularView;
 import net.amentum.niomedic.pacientes.views.PacienteView;
@@ -40,10 +41,7 @@ public interface PacienteService {
 
     PacienteTitularView getTitularPorTelefono(String telefono);
 
-    Page<PacientePageView> getPacientePageByGroupWithDevice(Long selectGroup,
-                                                            Integer page,
-                                                            Integer size,
-                                                            String orderColumn,
-                                                            String orderType)
-            throws PacienteException;
+    List<PacienteDeviceMinView> getPacientesByGroupWithDevice(Long selectGroup,
+                                                              String orderColumn,
+                                                              String orderType) throws PacienteException;
 }
