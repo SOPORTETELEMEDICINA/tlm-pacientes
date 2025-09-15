@@ -59,11 +59,11 @@ public class Paciente implements Serializable {
    //   campo compuesto de busqueda
    private String datosBusqueda;
    private Boolean es_titular;
-   private String idDevice;
+    @Column(name = "id_device")
+    private String idDevice;
    private String claveElector;
 
    private Boolean pacienteAtendido;
-
 
    //relaciones entre tablas
    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "paciente")

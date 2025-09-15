@@ -442,6 +442,7 @@ public class PacienteConverter {
       pacientePageView.setIdPaciente(paciente.getIdPaciente());
       pacientePageView.setCurp(paciente.getCurp());
       pacientePageView.setPacienteAtendido(paciente.getPacienteAtendido());
+      pacientePageView.setIdDevice(paciente.getIdDevice());
       logger.debug("converter paciente to View-Page: {}", pacientePageView);
       return pacientePageView;
    }

@@ -934,6 +934,80 @@ public class PacienteServiceImpl implements PacienteService {
       return pacienteConverter.toPacienteTitularView(paciente);
    }
 
+    @Override
+    public Page<PacientePageView> getPacientePageByGroupWithDevice(Long selectGroup,
+                                                                   Integer page,
+                                                                   Integer size,
+                                                                   String orderColumn,
+                                                                   String orderType) throws PacienteException {
+        try {
+            logger.info("===>>>getPacientePageByGroupWithDevice(): selectGroup={} page={} size={} orderColumn={} orderType={}",
+                    selectGroup, page, size, orderColumn, orderType);
+
+            if (selectGroup == null) {
+                PacienteException pe = new PacienteException("selectGroup es requerido",
+                        PacienteException.LAYER_SERVICE, PacienteException.ACTION_VALIDATE);
+                pe.addError("El parámetro selectGroup no puede ser null");
+                throw pe;
+            }
+
+            if (page == null) page = 0;
+            if (size == null) size = 10;
+
+            // Orden idéntico a tus otros pages
+            String defaultOrder = "nombre";
+            String by = (orderColumn == null || orderColumn.trim().isEmpty()) ? defaultOrder : orderColumn.trim();
+            Sort.Direction dir = ("desc".equalsIgnoreCase(orderType)) ? Sort.Direction.DESC : Sort.Direction.ASC;
+            Object mapped = (colOrderNames != null) ? colOrderNames.get(by) : by; // usa tu mapa existente
+            Sort sort = new Sort(dir, (String) mapped);
+            PageRequest request = new PageRequest(page, size, sort);
+
+            // 1) Resolver usuarios del grupo (JOIN pacientes_grupos)
+            List<Integer> idsInt = pacienteRepository.findIdByGroup(selectGroup);
+            List<Long> usuarios = new ArrayList<>();
+            if (idsInt != null) for (Integer i : idsInt) usuarios.add(i.longValue());
+            if (usuarios.isEmpty()) {
+                // grupo sin pacientes -> page vacío y salimos
+                return new PageImpl<>(new ArrayList<PacientePageView>(), request, 0);
+            }
+
+            // 2) Buscar solo ACTIVOS con idDevice y que pertenezcan al grupo
+            Page<Paciente> pacPage = pacienteRepository.findByUsuariosWithDeviceActivos(usuarios, request);
+
+            // 3) Mapear a la MISMA view del page (tu converter ya pone idDevice)
+            List<PacientePageView> views = new ArrayList<>();
+            for (Paciente p : pacPage.getContent()) {
+                PacientePageView v = pacienteConverter.toViewPage(p);
+
+                // (opcional, igual que en tu page) setear grupo y nombre de grupo
+                try {
+                    v.setIdGroup(pacientesGruposRepository.findFirstByIdPaciente(v.getIdPaciente()).getIdGroup());
+                    v.setGroupName(apiServCaller.getGroupName(v.getIdGroup()));
+                } catch (Exception e) {
+                    logger.warn("No fue posible resolver el group/groupName para {}", v.getIdPaciente(), e);
+                }
+
+                views.add(v);
+            }
+
+            return new PageImpl<>(views, request, pacPage.getTotalElements());
+
+        } catch (PacienteException pe) {
+            throw pe;
+        } catch (IllegalArgumentException iae) {
+            logger.error("===>>>Algún parámetro no es correcto", iae);
+            PacienteException pe = new PacienteException("Algún parámetro no es correcto:",
+                    PacienteException.LAYER_SERVICE, PacienteException.ACTION_VALIDATE);
+            pe.addError("Puede que sea null, vacío o valor incorrecto");
+            throw pe;
+        } catch (Exception ex) {
+            PacienteException pe = new PacienteException(
+                    "Ocurrió un error al seleccionar lista de Pacientes por grupo con device",
+                    PacienteException.LAYER_SERVICE, PacienteException.ACTION_SELECT);
+            logger.error("===>>>Error en getPacientePageByGroupWithDevice - CODE: {}", pe.getExceptionCode(), ex);
+            throw pe;
+        }
+    }
 }
 
 

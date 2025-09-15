@@ -293,4 +293,26 @@ public class PacienteRest extends BaseController {
       return ResponseEntity.ok(pacienteDTO);
    }
 
+    // GET /pacientes/page/by-group-with-device?selectGroup=123&page=0&size=20&orderColumn=nombre&orderType=asc
+    @RequestMapping(value = "page/by-group-with-device", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public Page<PacientePageView> getPacientePageByGroupWithDevice(
+            @RequestParam Long selectGroup,
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) String orderColumn,
+            @RequestParam(required = false) String orderType) throws PacienteException {
+
+        logger.info("===>>>getPacientePageByGroupWithDevice(): selectGroup={} page={} size={} orderColumn={} orderType={}",
+                selectGroup, page, size, orderColumn, orderType);
+
+        if (page == null) page = 0;
+        if (size == null) size = 10;
+        if (orderType == null || orderType.isEmpty()) orderType = "asc";
+        if (orderColumn == null || orderColumn.isEmpty()) orderColumn = "nombre";
+
+        return pacienteService.getPacientePageByGroupWithDevice(selectGroup, page, size, orderColumn, orderType);
+    }
+
+
 }

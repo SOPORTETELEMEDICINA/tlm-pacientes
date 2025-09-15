@@ -39,4 +39,11 @@ public interface PacienteService {
     void updateIdDevice(Integer idUsuario, String idDevice) throws PacienteException;
 
     PacienteTitularView getTitularPorTelefono(String telefono);
+
+    Page<PacientePageView> getPacientePageByGroupWithDevice(Long selectGroup,
+                                                            Integer page,
+                                                            Integer size,
+                                                            String orderColumn,
+                                                            String orderType)
+            throws PacienteException;
 }
